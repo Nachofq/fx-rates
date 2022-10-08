@@ -1,5 +1,4 @@
 import Hapi from "@hapi/hapi";
-import { Rate } from "antd";
 
 import GeneralPurposeController from "./controllers/GeneralPurposeController";
 import RatesController from "./controllers/RatesController";
