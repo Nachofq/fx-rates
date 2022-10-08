@@ -3,6 +3,7 @@ import Hapi from "@hapi/hapi";
 import settings from "../../settings";
 import Decimal from "decimal.js";
 import { logger } from "../../utils/logger";
+import { IRate } from "../../models/Rate";
 
 const { FIXER_API_URL, FIXER_API_KEY } = settings;
 const FIXER_GET_RATES_URL = `${FIXER_API_URL}/latest?access_key=${FIXER_API_KEY}`;
@@ -217,18 +218,21 @@ export default class FixerProvider {
     this.useDummyData = useDummyData;
   }
 
+  // Public Methods
   async getRates(request: Hapi.Request) {
     try {
       const { pairs } = request.payload as IPayloadPairs;
       const parsedPairs = this.parsePairs(pairs);
       await this.fetchPairsRates(parsedPairs);
-      logger.info(parsedPairs);
-      return parsedPairs;
+      const result = this.convertToSchemaShape(parsedPairs);
+      logger.info(result);
+      return result;
     } catch (e) {
       throw e;
     }
   }
 
+  // Private Methods
   private parsePairs(pairs: string[]) {
     let aux = Array.from(new Set(pairs.sort((a, b) => a.localeCompare(b))));
     let result: ParsedPairs = {};
@@ -243,7 +247,6 @@ export default class FixerProvider {
 
   private async fetchPairsRates(parsedPairs: ParsedPairs) {
     let fixerResponse: IFixerResponse | undefined;
-    let result: any;
     if (this.subscriptionType === "free") {
       if (this.useDummyData) {
         fixerResponse = freeSubscriptionDummyData;
@@ -298,5 +301,22 @@ export default class FixerProvider {
         ).toNumber();
       });
     });
+  }
+
+  private convertToSchemaShape(parsedPairs: ParsedPairs) {
+    const result: IRate[] = [];
+    const baseCurrencies = Object.keys(parsedPairs);
+    baseCurrencies.forEach((baseCurrency) => {
+      const targetCurrencies = Object.keys(parsedPairs[baseCurrency]);
+      targetCurrencies.forEach((targetCurrency) => {
+        result.push({
+          pair: baseCurrency + targetCurrency,
+          base: baseCurrency,
+          target: targetCurrency,
+          rate: parsedPairs[baseCurrency][targetCurrency],
+        });
+      });
+    });
+    return result;
   }
 }
