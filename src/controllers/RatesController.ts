@@ -27,11 +27,29 @@ class RatesController {
       );
       return {
         rates,
-        dblog: {
-          nMatched: result.nMatched,
-          nUpserted: result.nUpserted,
-          nModified: result.nModified,
-        },
+        dblog: { ...result },
+      };
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async addMarkup(request: Hapi.Request) {
+    try {
+      const { pairs } = request.payload as {
+        pairs: { [key: string]: number }[];
+      };
+      const result = await Rate.bulkWrite(
+        // Upserting
+        pairs.map((rate) => ({
+          updateOne: {
+            filter: { pair: rate.pair },
+            update: { $set: { fee: rate.fee } },
+          },
+        }))
+      );
+      return {
+        dblog: { ...result },
       };
     } catch (e) {
       throw e;
