@@ -18,6 +18,12 @@ const routes = (server: Hapi.Server) => {
     path: "/create-rates",
     handler: (request) => ratesController.createRates(request),
   });
+
+  server.route({
+    method: "PATCH",
+    path: "/add-markup",
+    handler: (request) => ratesController.addMarkup(request),
+  });
 };
 
 export default routes;
