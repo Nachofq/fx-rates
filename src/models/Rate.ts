@@ -1,8 +1,16 @@
 import mongoose from "mongoose";
-
 const { Schema } = mongoose;
 
-const rateSchema = new Schema({
+export interface IRate {
+  pair: string;
+  base: string;
+  target: string;
+  rate: number;
+  fee?: number;
+  createdAt?: Date;
+}
+
+const rateSchema = new Schema<IRate>({
   pair: String,
   base: String,
   target: String,
