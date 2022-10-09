@@ -1,12 +1,15 @@
 import Hapi from "@hapi/hapi";
 import providers from "../providers";
 import mongoose from "mongoose";
+import { calculateFeeAmount, calculateMarkedUpRate } from "../lib/RatesLib";
+import { IRate } from "../models/Rate";
+import { logger } from "../utils/logger";
 require("../models/Rate");
 
 const Provider = providers("fixer");
 const provider = new Provider({
   subscriptionType: "free",
-  useDummyData: true,
+  useDummyData: false,
 });
 
 const Rate = mongoose.model("Rate");
@@ -30,6 +33,7 @@ class RatesController {
         dblog: { ...result },
       };
     } catch (e) {
+      logger.error(e);
       throw e;
     }
   }
@@ -52,6 +56,31 @@ class RatesController {
         dblog: { ...result },
       };
     } catch (e) {
+      logger.error(e);
+      throw e;
+    }
+  }
+
+  async getRates(request: Hapi.Request) {
+    try {
+      const { pairs } = request.query;
+      const pairsSplitted = pairs.split(",");
+      const result = (await Rate.find({
+        pair: { $in: pairsSplitted },
+      }).lean()) as IRate[];
+
+      result.forEach((rate, index) => {
+        if (!rate.fee) return;
+        result[index].feeAmount = calculateFeeAmount(rate.rate, rate.fee);
+        result[index].markedUpRate = calculateMarkedUpRate(rate.rate, rate.fee);
+        return;
+      });
+
+      return {
+        dblog: { ...result },
+      };
+    } catch (e) {
+      logger.error(e);
       throw e;
     }
   }

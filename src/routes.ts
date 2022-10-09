@@ -24,6 +24,12 @@ const routes = (server: Hapi.Server) => {
     path: "/add-markup",
     handler: (request) => ratesController.addMarkup(request),
   });
+
+  server.route({
+    method: "GET",
+    path: "/get-rates",
+    handler: (request) => ratesController.getRates(request),
+  });
 };
 
 export default routes;
