@@ -228,6 +228,7 @@ export default class FixerProvider {
       logger.info(result);
       return result;
     } catch (e) {
+      logger.error(e);
       throw e;
     }
   }

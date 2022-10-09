@@ -7,6 +7,8 @@ export interface IRate {
   target: string;
   rate: number;
   fee?: number;
+  feeAmount?: number;
+  markedUpRate?: number;
   createdAt?: Date;
 }
 
