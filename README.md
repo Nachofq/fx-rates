@@ -24,13 +24,13 @@ Please install node and npm package manager. The easiest way is to get nvm and i
 In order to run the project locally the following environment variables should be provided in a .env file located at project's root directory.
 Also a running instance of mongodb is required.
 
-CHALLENGE_PORT = 3000
-CHALLENGE_HOST = localhost
-FIXER_API_URL = http://data.fixer.io/api
-FIXER_API_KEY = <FIXER_API_KEY>
-MONGODB_URL = mongodb://localhost:27017/
-MONGODB_OPTIONS = ""
-MONGODB_DATABASE = fx-rates
+- CHALLENGE_PORT = 3000
+- CHALLENGE_HOST = localhost
+- FIXER_API_URL = http://data.fixer.io/api
+- FIXER_API_KEY = <FIXER_API_KEY>
+- MONGODB_URL = mongodb://localhost:27017/
+- MONGODB_OPTIONS = ""
+- MONGODB_DATABASE = fx-rates
 
 ##### Production start
 
@@ -48,17 +48,21 @@ npm install
 npm run dev
 ```
 
-##### Usage
-
-After running the project the documentation can be found at [http://HOST:PORT/documentation](http://HOST:PORT/documentation)
-Default documentation for local instance [http://localhost:3000/documentation](http://HOST:PORT/documentation)
-
 ## Cloud Environment
 
 A deployment of the last main branch commit is available at
-https://fx-rates.herokuapp.com/
+https://fx-rates.herokuapp.com/\
 The documentation can be found at
 https://fx-rates.herokuapp.com/documentation
+
+## Usage
+
+Documentation for local instance [http://localhost:3000/documentation](http://localhost:3000/documentation)\
+Documentation for cloud instance https://fx-rates.herokuapp.com/documentation
+
+- Rates will be created in the database with /create-rates service.
+- After creating the rates the user can add the markup fee with /add-markup service.
+- After creating the rates the user can fetch the data with /get-rates service
 
 ## Postman collection
 
