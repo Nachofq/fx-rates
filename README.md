@@ -51,13 +51,13 @@ npm run dev
 ## Cloud Environment
 
 A deployment of the last main branch commit is available at
-https://fx-rates.herokuapp.com/\
+https://fx-rates.herokuapp.com/
 The documentation can be found at
 https://fx-rates.herokuapp.com/documentation
 
 ## Usage
 
-Documentation for local instance [http://localhost:3000/documentation](http://localhost:3000/documentation)\
+Documentation for local instance [http://localhost:3000/documentation](http://localhost:3000/documentation)
 Documentation for cloud instance https://fx-rates.herokuapp.com/documentation
 
 - Rates will be created in the database with /create-rates service.
