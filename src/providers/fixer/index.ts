@@ -188,10 +188,7 @@ interface IConstructor {
   useDummyData: boolean;
 }
 export type SubscriptionTypes = "free" | "starter" | "pro" | "enterprise";
-interface IFixerRatesRequest {
-  base: string;
-  symbol: string[];
-}
+
 interface IFixerResponse {
   success: boolean;
   timestamp: number;

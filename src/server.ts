@@ -1,18 +1,24 @@
 import Hapi from "@hapi/hapi";
+import Inert from "@hapi/inert";
+import Vision from "@hapi/vision";
+import HapiSwagger from "hapi-swagger";
 import mongoose from "mongoose";
 import routes from "./routes";
 import settings from "./settings";
 import { logger } from "./utils/logger";
 
-const { PORT, HOST, MONGODB_URL, MONGODB_DATABASE } = settings;
+const { PORT, HOST, MONGODB_URL, MONGODB_DATABASE, MONGODB_OPTIONS } = settings;
 
 //load database
 if (!MONGODB_URL) {
   logger.error("MONGODB_URL env missing");
 } else {
-  mongoose.connect(MONGODB_URL + MONGODB_DATABASE, function mongoConnect() {
-    logger.info(`Connection with database ${MONGODB_DATABASE} succeeded`);
-  });
+  mongoose.connect(
+    MONGODB_URL + MONGODB_DATABASE + MONGODB_OPTIONS,
+    function mongoConnect() {
+      logger.info(`Connection with database ${MONGODB_DATABASE} succeeded`);
+    }
+  );
 }
 
 const initServer = async () => {
@@ -20,6 +26,8 @@ const initServer = async () => {
     port: PORT,
     host: HOST,
   });
+
+  await server.register([Inert, Vision, HapiSwagger]);
 
   routes(server);
 
