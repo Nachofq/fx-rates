@@ -11,7 +11,7 @@ require("../models/Rate");
 const Provider = providers("fixer");
 const provider = new Provider({
   subscriptionType: "free",
-  useDummyData: true,
+  useDummyData: false,
 });
 
 const Rate = mongoose.model("Rate");
