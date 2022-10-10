@@ -2,12 +2,11 @@
   "name": "fx-rates",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "server.ts",
   "scripts": {
     "build": "rimraf ./dist && tsc",
-    "start": "node dist/server.js",
-    "dev": "nodemon ./src/server.ts",
-    "test": "mocha -r ts-node/register 'test/**/*.ts'"
+    "start": "node ./dist/server.js",
+    "dev": "nodemon ./src/server.ts"
   },
   "repository": {
     "type": "git",
@@ -24,6 +23,8 @@
     "@hapi/hapi": "^20.2.2",
     "@hapi/inert": "^7.0.0",
     "@hapi/vision": "^7.0.0",
+    "hapi-swagger": "^14.5.5",
+    "axios": "^1.1.2",
     "cors": "^2.8.5",
     "decimal.js": "^10.4.1",
     "dotenv": "^16.0.3",
@@ -38,7 +39,6 @@
     "@types/hapi__joi": "^17.1.8",
     "@types/hapi__vision": "^5.5.3",
     "@types/node": "^18.8.3",
-    "hapi-swagger": "^14.5.5",
     "nodemon": "^2.0.20",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1",
