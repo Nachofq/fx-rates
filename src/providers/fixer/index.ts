@@ -1,9 +1,9 @@
 import axios from "axios";
-import Hapi from "@hapi/hapi";
 import settings from "../../settings";
 import Decimal from "decimal.js";
 import { logger } from "../../utils/logger";
 import { IRate } from "../../models/Rate";
+import * as Boom from "@hapi/boom";
 
 const { FIXER_API_URL, FIXER_API_KEY } = settings;
 const FIXER_GET_RATES_URL = `${FIXER_API_URL}/latest?access_key=${FIXER_API_KEY}`;
@@ -202,9 +202,7 @@ interface IFixerResponse {
 interface IFixerRates {
   [key: string]: number;
 }
-interface IPayloadPairs {
-  pairs: string[];
-}
+
 type ParsedPairs = {
   [key: string]: { [key: string]: number };
 };
@@ -219,23 +217,21 @@ export default class FixerProvider {
   }
 
   // Public Methods
-  async getRates(request: Hapi.Request) {
-    try {
-      const { pairs } = request.payload as IPayloadPairs;
-      const parsedPairs = this.parsePairs(pairs);
-      await this.fetchPairsRates(parsedPairs);
-      const result = this.convertToSchemaShape(parsedPairs);
-      logger.info(result);
-      return result;
-    } catch (e) {
-      logger.error(e);
-      throw e;
-    }
+  async getRates(pairs: string[]) {
+    const parsedPairs = this.parsePairs(pairs);
+    await this.fetchPairsRates(parsedPairs);
+    const result = this.convertToSchemaShape(parsedPairs);
+    logger.info(result);
+    return result;
   }
 
   // Private Methods
   private parsePairs(pairs: string[]) {
-    let aux = Array.from(new Set(pairs.sort((a, b) => a.localeCompare(b))));
+    let aux = Array.from(
+      new Set(
+        pairs.map((x) => x.toUpperCase()).sort((a, b) => a.localeCompare(b))
+      )
+    );
     let result: ParsedPairs = {};
     aux.forEach((pair) => {
       return (result[pair.slice(0, 3)] = {
@@ -262,6 +258,7 @@ export default class FixerProvider {
       // );
       // fixerResponse = axiosResponse.data;
       logger.error("Paid subscription not implemented");
+      throw Boom.notImplemented("Paid subscription not implemented");
     }
   }
 
