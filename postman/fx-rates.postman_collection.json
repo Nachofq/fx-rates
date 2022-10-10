@@ -1,0 +1,127 @@
+{
+	"info": {
+		"_postman_id": "b545b2e8-7fc2-4d04-b757-01a9b0bba1ac",
+		"name": "fx-rates",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "fixerApi",
+			"item": [
+				{
+					"name": "Get currency rates",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "?access_key={{fixerApiKey}}",
+							"query": [
+								{
+									"key": "access_key",
+									"value": "{{fixerApiKey}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostName}}:{{port}}/",
+					"protocol": "http",
+					"host": [
+						"{{hostName}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Rates",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"pairs\": [\n        \"EURUSD\",\n        \"EURARS\",\n        \"USDARS\",\n        \"EURBRL\",\n        \"USDBRL\",\n        \"BRLARS\",\n        \"ARSARS\"\n        ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostName}}{{port}}/create-rates",
+					"host": [
+						"{{protocol}}{{hostName}}{{port}}"
+					],
+					"path": [
+						"create-rates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Patch Rate Fees",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"pairs\": [\n        {\"pair\": \"EURUSD\", \"fee\": 0.01},\n        {\"pair\": \"EURARS\", \"fee\": 0.01},\n        {\"pair\": \"USDARS\", \"fee\": 0.04},\n        {\"pair\": \"EURBRL\", \"fee\": 0.03},\n        {\"pair\": \"USDBRL\", \"fee\": 0.01},\n        {\"pair\": \"BRLARS\", \"fee\": 0.01},\n        {\"pair\": \"ARSEUR\", \"fee\": 0.04}\n        ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostName}}{{port}}/add-markup",
+					"host": [
+						"{{protocol}}{{hostName}}{{port}}"
+					],
+					"path": [
+						"add-markup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Rates",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostName}}:{{port}}/get-rates?",
+					"protocol": "http",
+					"host": [
+						"{{hostName}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"get-rates"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
