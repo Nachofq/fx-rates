@@ -122,7 +122,7 @@ class RatesController {
       });
 
       return {
-        dblog: { ...result },
+        result,
       };
     } catch (e: any) {
       logger.error(e);

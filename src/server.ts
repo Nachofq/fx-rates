@@ -1,4 +1,7 @@
 import Hapi from "@hapi/hapi";
+import Inert from "@hapi/inert";
+import Vision from "@hapi/vision";
+import HapiSwagger from "hapi-swagger";
 import mongoose from "mongoose";
 import routes from "./routes";
 import settings from "./settings";
@@ -20,6 +23,8 @@ const initServer = async () => {
     port: PORT,
     host: HOST,
   });
+
+  await server.register([Inert, Vision, HapiSwagger]);
 
   routes(server);
 
